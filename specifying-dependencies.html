@@ -72,15 +72,15 @@
 
 
     <h1 class="title">Specifying Dependencies</h1>
-    <p>Your crates can depend on other libraries from crates.io, git repositories, or
+    <p>Your crates can depend on other libraries from <a href="https://crates.io/">crates.io</a>, <code>git</code> repositories, or
 subdirectories on your local file system. You can also temporarily override the
-location of a dependency-- for example, to be able to test out a bug fix in the
+location of a dependency— for example, to be able to test out a bug fix in the
 dependency that you are working on locally. You can have different
 dependencies for different platforms, and dependencies that are only used during
 development. Let&#39;s take a look at how to do each of these.</p>
 
 <h1 id='specifying-dependencies-from-cratesio' class='section-header'><a href='#specifying-dependencies-from-cratesio'>Specifying Dependencies from crates.io</a></h1>
-<p>Cargo is configured to look for dependencies on <code>crates.io</code> by default. Only
+<p>Cargo is configured to look for dependencies on <a href="https://crates.io/">crates.io</a> by default. Only
 the name and a version string are required in this case. In <a href="guide.html">the cargo
 guide</a>, we specified a dependency on the <code>time</code> crate:</p>
 
@@ -95,7 +95,7 @@ if we had specified <code>&quot;^0.1.12&quot;</code>, which is called a caret re
 <h2 id='caret-requirements' class='section-header'><a href='#caret-requirements'>Caret requirements</a></h2>
 <p><strong>Caret requirements</strong> allow SemVer compatible updates to a specified version.
 An update is allowed if the new version number does not modify the left-most
-non-zero digit in the [major, minor, patch] tuple. In this case, if we ran
+non-zero digit in the major, minor, patch grouping. In this case, if we ran
 <code>cargo update -p time</code>, cargo would update us to version <code>0.1.13</code> if it was
 available, but would not update us to <code>0.2.0</code>. If instead we had specified the
 version string as <code>^1.0</code>, cargo would update to <code>1.1</code> but not <code>2.0</code>. <code>0.0.x</code> is
@@ -115,10 +115,8 @@ be allowed with them:</p>
 
 <p>While SemVer says that there is no compatibility before 1.0.0, many programmers
 treat a <code>0.x.y</code> release in the same way as a <code>1.x.y</code> release: that is, <code>y</code> is
-incremented for bugfixes, and <code>x</code> is incremented for new features.</p>
-
-<p>As such, Cargo considers a <code>0.x.y</code> and <code>0.x.z</code> version, where <code>z &gt; y</code>, to be
-compatible.</p>
+incremented for bugfixes, and <code>x</code> is incremented for new features. As such,
+Cargo considers a <code>0.x.y</code> and <code>0.x.z</code> version, where <code>z &gt; y</code>, to be compatible.</p>
 
 <h2 id='tilde-requirements' class='section-header'><a href='#tilde-requirements'>Tilde requirements</a></h2>
 <p><strong>Tilde requirements</strong> specify a minimal version with some ability to update.
@@ -159,26 +157,26 @@ exact version to depend on.</p>
 <h2 id='multiple-requirements' class='section-header'><a href='#multiple-requirements'>Multiple requirements</a></h2>
 <p>Multiple version requirements can also be separated with a comma, e.g. <code>&gt;= 1.2, &lt; 1.5</code>.</p>
 
-<h1 id='specifying-dependencies-from-git-repositories' class='section-header'><a href='#specifying-dependencies-from-git-repositories'>Specifying dependencies from git repositories</a></h1>
-<p>To depend on a library located in a git repository, the minimum information
+<h1 id='specifying-dependencies-from-git-repositories' class='section-header'><a href='#specifying-dependencies-from-git-repositories'>Specifying dependencies from <code>git</code> repositories</a></h1>
+<p>To depend on a library located in a <code>git</code> repository, the minimum information
 you need to specify is the location of the repository with the <code>git</code> key:</p>
 
 <pre><code class="language-toml">[dependencies]
-color = { git = &quot;https://github.com/bjz/color-rs&quot; }
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand&quot; }
 </code></pre>
 
-<p>Cargo will fetch the git repository at this location then look for a
-<code>Cargo.toml</code> for the requested crate anywhere inside the git repository
+<p>Cargo will fetch the <code>git</code> repository at this location then look for a
+<code>Cargo.toml</code> for the requested crate anywhere inside the <code>git</code> repository
 (not necessarily at the root).</p>
 
 <p>Since we haven’t specified any other information, Cargo assumes that
 we intend to use the latest commit on the <code>master</code> branch to build our project.
 You can combine the <code>git</code> key with the <code>rev</code>, <code>tag</code>, or <code>branch</code> keys to
 specify something else. Here&#39;s an example of specifying that you want to use
-the latest commit on a branch named <code>development</code>:</p>
+the latest commit on a branch named <code>next</code>:</p>
 
 <pre><code class="language-toml">[dependencies]
-color = { git = &quot;https://github.com/bjz/color-rs&quot;, branch = &quot;development&quot; }
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand&quot;, branch = &quot;next&quot; }
 </code></pre>
 
 <h1 id='specifying-path-dependencies' class='section-header'><a href='#specifying-path-dependencies'>Specifying path dependencies</a></h1>
@@ -207,9 +205,8 @@ in the <code>hello_utils</code> folder (relative to the <code>Cargo.toml</code> 
 <p>And that’s it! The next <code>cargo build</code> will automatically build <code>hello_utils</code> and
 all of its own dependencies, and others can also start using the crate as well.
 However, crates that use dependencies specified with only a path are not
-permitted on crates.io. If we wanted to publish our <code>hello_world</code> crate, we
-would need to publish a version of <code>hello_utils</code> to crates.io (or specify a git
-repository location) and specify its version in the dependencies line as well:</p>
+permitted on <a href="https://crates.io/">crates.io</a>. If we wanted to publish our <code>hello_world</code> crate, we
+would need to publish a version of <code>hello_utils</code> to <a href="or%20specify%20a%20%60git%60%0Arepository%20location">crates.io</a> and specify its version in the dependencies line as well:</p>
 
 <pre><code class="language-toml">[dependencies]
 hello_utils = { path = &quot;hello_utils&quot;, version = &quot;0.1.0&quot; }
@@ -217,28 +214,29 @@ hello_utils = { path = &quot;hello_utils&quot;, version = &quot;0.1.0&quot; }
 
 <h1 id='overriding-dependencies' class='section-header'><a href='#overriding-dependencies'>Overriding Dependencies</a></h1>
 <p>Sometimes you may want to override one of Cargo’s dependencies. For example,
-let’s say you’re working on a project, <code>conduit-static</code>, which depends on
-the package <code>conduit</code>. You find a bug in <code>conduit</code>, and you want to write a
-patch and be able to test out your patch by using your version of <code>conduit</code>
-in <code>conduit-static</code>. Here’s what <code>conduit-static</code>’s <code>Cargo.toml</code> looks like:</p>
+let’s say you’re working on a project,
+<a href="https://crates.io/crates/uuid"><code>uuid</code></a>, which depends on
+the package <a href="https://crates.io/crates/rand"><code>rand</code></a>. You find a bug in <code>rand</code>, and
+you want to write a patch and be able to test out your patch by using your
+version of <code>rand</code> in <code>uuid</code>. Here’s what <code>uuid</code>’s <code>Cargo.toml</code> looks like:</p>
 
 <pre><code class="language-toml">[package]
-name = &quot;conduit-static&quot;
-version = &quot;0.1.0&quot;
-authors = [&quot;Yehuda Katz &lt;wycats@example.com&gt;&quot;]
+name = &quot;uuid&quot;
+version = &quot;0.2.2&quot;
+authors = [&quot;The Rust Project Developers&quot;]
 
 [dependencies]
-conduit = &quot;0.7&quot;
+rand = { version = &quot;0.3&quot;, optional = true }
 </code></pre>
 
-<p>You check out a local copy of <code>conduit</code>, let’s say in your <code>~/src</code> directory:</p>
+<p>You check out a local copy of <code>rand</code>, let’s say in your <code>~/src</code> directory:</p>
 
 <pre><code class="language-shell">$ cd ~/src
-$ git clone https://github.com/conduit-rust/conduit.git
+$ git clone https://github.com/rust-lang-nursery/rand.git
 </code></pre>
 
-<p>You’d like to have <code>conduit-static</code> use your local version of <code>conduit</code>,
-rather than the one on crates.io, while you fix the bug.</p>
+<p>You’d like to have <code>uuid</code> use your local version of <code>rand</code>,
+rather than the one on <a href="https://crates.io/">crates.io</a>, while you fix the bug.</p>
 
 <p>Cargo solves this problem by allowing you to have a local configuration
 that specifies an <strong>override</strong>. If Cargo finds this configuration when
@@ -246,11 +244,11 @@ building your package, it will use the override on your local machine
 instead of the source specified in your <code>Cargo.toml</code>.</p>
 
 <p>Cargo looks for a directory named <code>.cargo</code> up the directory hierarchy of
-your project. If your project is in <code>/path/to/project/conduit-static</code>,
+your project. If your project is in <code>/path/to/project/uuid</code>,
 it will search for a <code>.cargo</code> in:</p>
 
 <ul>
-<li><code>/path/to/project/conduit-static</code></li>
+<li><code>/path/to/project/uuid</code></li>
 <li><code>/path/to/project</code></li>
 <li><code>/path/to</code></li>
 <li><code>/path</code></li>
@@ -267,15 +265,15 @@ your code directory or in your home directory).</p>
 
 <p>Inside that file, put this:</p>
 
-<pre><code class="language-toml">paths = [&quot;/path/to/project/conduit&quot;]
+<pre><code class="language-toml">paths = [&quot;/path/to/project/rand&quot;]
 </code></pre>
 
 <p>This array should be filled with directories that contain a <code>Cargo.toml</code>. In
-this instance, we’re just adding <code>conduit</code>, so it will be the only one that’s
+this instance, we’re just adding <code>rand</code>, so it will be the only one that’s
 overridden. This path must be an absolute path.</p>
 
 <p>Note: using a local configuration to override paths will only work for crates
-that have been published to crates.io. You cannot use this feature to tell Cargo
+that have been published to <a href="https://crates.io/">crates.io</a>. You cannot use this feature to tell Cargo
 how to find local unpublished crates.</p>
 
 <p>More information about local configuration can be found in the <a href="config.html">configuration

@@ -74,7 +74,7 @@
     <h1 class="title">Publishing on crates.io</h1>
     <p>Once you&#39;ve got a library that you&#39;d like to share with the world, it&#39;s time to
 publish it on <a href="https://crates.io/">crates.io</a>! Publishing a crate is when a specific
-version is uploaded to be hosted on crates.io.</p>
+version is uploaded to be hosted on <a href="https://crates.io/">crates.io</a>.</p>
 
 <p>Take care when publishing a crate, because a publish is <strong>permanent</strong>. The
 version can never be overwritten, and the code cannot be deleted. There is no
@@ -96,12 +96,12 @@ with anyone else. If it leaks for any reason, you should regenerate it
 immediately.</p>
 
 <h1 id='before-publishing-a-new-crate' class='section-header'><a href='#before-publishing-a-new-crate'>Before publishing a new crate</a></h1>
-<p>Keep in mind that crate names on crates.io are allocated on a first-come-first-
+<p>Keep in mind that crate names on <a href="https://crates.io/">crates.io</a> are allocated on a first-come-first-
 serve basis. Once a crate name is taken, it cannot be used for another crate.</p>
 
 <h2 id='packaging-a-crate' class='section-header'><a href='#packaging-a-crate'>Packaging a crate</a></h2>
 <p>The next step is to package up your crate into a format that can be uploaded to
-crates.io. For this we’ll use the <code>cargo package</code> subcommand. This will take
+<a href="https://crates.io/">crates.io</a>. For this we’ll use the <code>cargo package</code> subcommand. This will take
 our entire crate and package it all up into a <code>*.crate</code> file in the
 <code>target/package</code> directory.</p>
 
@@ -143,7 +143,7 @@ include = [
 
 <h2 id='uploading-the-crate' class='section-header'><a href='#uploading-the-crate'>Uploading the crate</a></h2>
 <p>Now that we’ve got a <code>*.crate</code> file ready to go, it can be uploaded to
-crates.io with the <code>cargo publish</code> command. And that’s it, you’ve now published
+<a href="https://crates.io/">crates.io</a> with the <code>cargo publish</code> command. And that’s it, you’ve now published
 your first crate!</p>
 
 <pre><code class="language-notrust">$ cargo publish
@@ -165,7 +165,7 @@ and run <code>cargo publish</code> to upload the new version.</p>
 
 <h1 id='managing-a-cratesio-based-crate' class='section-header'><a href='#managing-a-cratesio-based-crate'>Managing a crates.io-based crate</a></h1>
 <p>Management of crates is primarily done through the command line <code>cargo</code> tool
-rather than the crates.io web interface. For this, there are a few subcommands
+rather than the <a href="https://crates.io/">crates.io</a> web interface. For this, there are a few subcommands
 to manage a crate.</p>
 
 <h2 id='cargo-yank' class='section-header'><a href='#cargo-yank'><code>cargo yank</code></a></h2>
@@ -184,7 +184,7 @@ those secrets immediately.</p>
 
 <p>The semantics of a yanked version are that no new dependencies can be created
 against that version, but all existing dependencies continue to work. One of the
-major goals of crates.io is to act as a permanent archive of crates that does
+major goals of <a href="https://crates.io/">crates.io</a> is to act as a permanent archive of crates that does
 not change over time, and allowing deletion of a version would go against this
 goal. Essentially a yank means that all projects with a <code>Cargo.lock</code> will not
 break, while any future <code>Cargo.lock</code> files generated will not list the yanked
@@ -208,7 +208,7 @@ full rights to the crate. In addition to being able to publish or yank versions
 of the crate, they have the ability to add or remove owners, <em>including</em> the
 owner that made <em>them</em> an owner. Needless to say, you shouldn’t make people you
 don’t fully trust into a named owner. In order to become a named owner, a user
-must have logged into crates.io previously.</p>
+must have logged into <a href="https://crates.io/">crates.io</a> previously.</p>
 
 <p>If a team name is given to <code>--add</code>, that team becomes a “team” owner, with
 restricted right to the crate. While they have permission to publish or yank
@@ -226,7 +226,7 @@ is likely for you to encounter the following message when working with them:</p>
 
 <blockquote>
 <p>It looks like you don’t have permission to query a necessary property from
-GitHub to complete this request. You may need to re-authenticate on crates.io
+GitHub to complete this request. You may need to re-authenticate on <a href="https://crates.io/">crates.io</a>
 to grant permission to read GitHub org memberships. Just go to
 <a href="https://crates.io/login">https://crates.io/login</a></p>
 </blockquote>
@@ -248,9 +248,9 @@ as an owner, or publish a crate as a team owner. If you ever attempt to do this,
 you will get the error above. You may also see this error if you ever try to
 publish a crate that you don’t own at all, but otherwise happens to have a team.</p>
 
-<p>If you ever change your mind, or just aren’t sure if crates.io has sufficient
+<p>If you ever change your mind, or just aren’t sure if <a href="https://crates.io/">crates.io</a> has sufficient
 permission, you can always go to <a href="https://crates.io/login">https://crates.io/login</a>, which will prompt you
-for permission if crates.io doesn’t have all the scopes it would like to.</p>
+for permission if <a href="https://crates.io/">crates.io</a> doesn’t have all the scopes it would like to.</p>
 
 <p>An additional barrier to querying GitHub is that the organization may be
 actively denying third party access. To check this, you can go to:</p>
@@ -263,12 +263,12 @@ something like:</p>
 
 <p><img src="images/org-level-acl.png" alt="Organization Access Control"></p>
 
-<p>Where you may choose to explicitly remove crates.io from your organization’s
+<p>Where you may choose to explicitly remove <a href="https://crates.io/">crates.io</a> from your organization’s
 blacklist, or simply press the “Remove Restrictions” button to allow all third
 party applications to access this data.</p>
 
-<p>Alternatively, when crates.io requested the <code>read:org</code> scope, you could have
-explicitly whitelisted crates.io querying the org in question by pressing
+<p>Alternatively, when <a href="https://crates.io/">crates.io</a> requested the <code>read:org</code> scope, you could have
+explicitly whitelisted <a href="https://crates.io/">crates.io</a> querying the org in question by pressing
 the “Grant Access” button next to its name:</p>
 
 <p><img src="images/auth-level-acl.png" alt="Authentication Access Control"></p>

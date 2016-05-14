@@ -88,13 +88,6 @@ dependencies and ensure that you’ll always get a repeatable build.</p>
 <li>Introduces conventions, making working with Rust projects easier.</li>
 </ul>
 
-<h1 id='converting-to-cargo' class='section-header'><a href='#converting-to-cargo'>Converting to Cargo</a></h1>
-<p>You can convert an existing Rust project to use Cargo. You’ll have to create a
-<code>Cargo.toml</code> file with all of your dependencies, and move your source files and
-test files into the places where Cargo expects them to be. See the <a href="manifest.html">manifest
-description</a> and the <a href="#project-layout">Project Layout</a> section
-below for more details.</p>
-
 <h1 id='creating-a-new-project' class='section-header'><a href='#creating-a-new-project'>Creating A New Project</a></h1>
 <p>To start a new project with Cargo, use <code>cargo new</code>:</p>
 
@@ -170,23 +163,23 @@ dependencies. Since we don’t have any yet, it’s not very interesting.</p>
 class="s1">   Compiling</span> hello_world v0.1.0 (file:///path/to/project/hello_world)</code></pre>
 
 <p><code>cargo build --release</code> puts the resulting binary in
-<code>target/release/hello_world</code> instead of <code>target/debug</code>.</p>
+<code>target/release</code> instead of <code>target/debug</code>.</p>
 
 <h1 id='working-on-an-existing-cargo-project' class='section-header'><a href='#working-on-an-existing-cargo-project'>Working on an existing Cargo project</a></h1>
 <p>If you download an existing project that uses Cargo, it’s really easy
 to get going.</p>
 
-<p>First, get the project from somewhere. In this example, we’ll use <code>color-rs</code>
+<p>First, get the project from somewhere. In this example, we’ll use <code>rand</code>
 cloned from its repository on GitHub:</p>
 
-<pre><code class="language-sh">$ git clone https://github.com/bjz/color-rs.git
-$ cd color-rs
+<pre><code class="language-sh">$ git clone https://github.com/rust-lang-nursery/rand.git
+$ cd rand
 </code></pre>
 
 <p>To build, use <code>cargo build</code>:</p>
 
 <pre><code class="language-shell"><span class="gp">$</span> cargo build
-<span style="font-weight: bold" class="s1">   Compiling</span> color v0.1.0 (file:///path/to/project/color-rs)</code></pre>
+<span style="font-weight: bold" class="s1">   Compiling</span> rand v0.1.0 (file:///path/to/project/rand)</code></pre>
 
 <p>This will fetch all of the dependencies and then build them, along with the
 project.</p>
@@ -310,24 +303,24 @@ version = &quot;0.1.0&quot;
 authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
 
 [dependencies]
-color = { git = &quot;https://github.com/bjz/color-rs.git&quot; }
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand.git&quot; }
 </code></pre>
 
-<p>This project has a single dependency, on the <code>color</code> library. We’ve stated in
+<p>This project has a single dependency, on the <code>rand</code> library. We’ve stated in
 this case that we’re relying on a particular Git repository that lives on
 GitHub. Since we haven’t specified any other information, Cargo assumes that
 we intend to use the latest commit on the <code>master</code> branch to build our project.</p>
 
 <p>Sound good? Well, there’s one problem: If you build this project today, and
 then you send a copy to me, and I build this project tomorrow, something bad
-could happen. <code>bjz</code> could update <code>color-rs</code> in the meantime, and my build would
-include new commits while yours would not. Therefore, we would get different
-builds. This would be bad because we want reproducible builds.</p>
+could happen. There could be more commits to <code>rand</code> in the meantime, and my
+build would include new commits while yours would not. Therefore, we would
+get different builds. This would be bad because we want reproducible builds.</p>
 
 <p>We could fix this problem by putting a <code>rev</code> line in our <code>Cargo.toml</code>:</p>
 
 <pre><code class="language-toml">[dependencies]
-color = { git = &quot;https://github.com/bjz/color-rs.git&quot;, rev = &quot;bf739419&quot; }
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand.git&quot;, rev = &quot;9f35b8e&quot; }
 </code></pre>
 
 <p>Now our builds will be the same. But there’s a big drawback: now we have to
@@ -344,7 +337,7 @@ version = &quot;0.1.0&quot;
 authors = [&quot;Your Name &lt;you@example.com&gt;&quot;]
 
 [dependencies]
-color = { git = &quot;https://github.com/bjz/color-rs.git&quot; }
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand.git&quot; }
 </code></pre>
 
 <p>Cargo will take the latest commit and write that information out into our
@@ -354,13 +347,13 @@ color = { git = &quot;https://github.com/bjz/color-rs.git&quot; }
 name = &quot;hello_world&quot;
 version = &quot;0.1.0&quot;
 dependencies = [
- &quot;color 0.1.0 (git+https://github.com/bjz/color-rs.git#bf739419e2d31050615c1ba1a395b474269a4b98)&quot;,
+ &quot;rand 0.1.0 (git+https://github.com/rust-lang-nursery/rand.git#9f35b8e439eeedd60b9414c58f389bdc6a3284f9)&quot;,
 ]
 
 [[package]]
-name = &quot;color&quot;
+name = &quot;rand&quot;
 version = &quot;0.1.0&quot;
-source = &quot;git+https://github.com/bjz/color-rs.git#bf739419e2d31050615c1ba1a395b474269a4b98&quot;
+source = &quot;git+https://github.com/rust-lang-nursery/rand.git#9f35b8e439eeedd60b9414c58f389bdc6a3284f9&quot;
 
 </code></pre>
 
@@ -373,12 +366,12 @@ they’ll use the exact same SHA, even though we didn’t specify it in our
 re-calculate the dependencies and update things for us:</p>
 
 <pre><code class="language-shell">$ cargo update           # updates all dependencies
-$ cargo update -p color  # updates just “color”
+$ cargo update -p rand  # updates just “rand”
 </code></pre>
 
 <p>This will write out a new <code>Cargo.lock</code> with the new version information. Note
 that the argument to <code>cargo update</code> is actually a
-<a href="pkgid-spec.html">Package ID Specification</a> and <code>color</code> is just a short
+<a href="pkgid-spec.html">Package ID Specification</a> and <code>rand</code> is just a short
 specification.</p>
 
 <h1 id='tests' class='section-header'><a href='#tests'>Tests</a></h1>
@@ -393,7 +386,7 @@ no tests:</p>
 
 <pre><code class="language-shell"><span class="gp">$</span> cargo test
 <span style="font-weight: bold"
-class="s1">   Compiling</span> color v0.1.0 (https://github.com/bjz/color-rs.git#bf739419)
+class="s1">   Compiling</span> rand v0.1.0 (https://github.com/rust-lang-nursery/rand.git#9f35b8e)
 <span style="font-weight: bold"
 class="s1">   Compiling</span> hello_world v0.1.0 (file:///path/to/project/hello_world)
 <span style="font-weight: bold"
@@ -423,10 +416,19 @@ documentation for more details.</p>
 <p>To test your project on Travis CI, here is a sample <code>.travis.yml</code> file:</p>
 
 <pre class='rust rust-example-rendered'>
-<span class='ident'>language</span>: <span class='ident'>rust</span></pre>
+<span class='ident'>language</span>: <span class='ident'>rust</span>
+<span class='ident'>rust</span>:
+  <span class='op'>-</span> <span class='ident'>stable</span>
+  <span class='op'>-</span> <span class='ident'>beta</span>
+  <span class='op'>-</span> <span class='ident'>nightly</span>
+<span class='ident'>matrix</span>:
+  <span class='ident'>allow_failures</span>:
+    <span class='op'>-</span> <span class='ident'>rust</span>: <span class='ident'>nightly</span></pre>
 
-<p>Please see the <a href="https://docs.travis-ci.com/user/languages/rust/">Travis CI Rust documentation</a>
-for more information.</p>
+<p>This will test all three release channels, but any breakage in nightly
+will not fail your overall build. Please see the <a href="https://docs.travis-ci.com/user/languages/rust/">Travis CI Rust
+documentation</a> for more
+information.</p>
 
     <script type="text/javascript">
         window.playgroundUrl = "";
