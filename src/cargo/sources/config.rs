@@ -124,30 +124,52 @@ a lock file compatible with `{orig}` cannot be generated in this situation
     fn add_config(&mut self, name: &str, cfg: &ConfigValue) -> CargoResult<()> {
         let (table, _path) = try!(cfg.table(&format!("source.{}", name)));
         let mut srcs = Vec::new();
-        if let Some(val) = table.get("registry") {
-            let url = try!(url(val, &format!("source.{}.registry", name)));
-            srcs.push(SourceId::for_registry(&url));
-        }
-        if let Some(val) = table.get("local-registry") {
-            let (s, path) = try!(val.string(&format!("source.{}.local-registry",
-                                                     name)));
-            let mut path = path.to_path_buf();
-            path.pop();
-            path.pop();
-            path.push(s);
-            srcs.push(try!(SourceId::for_local_registry(&path)));
-        }
-        if let Some(val) = table.get("directory") {
-            let (s, path) = try!(val.string(&format!("source.{}.directory",
-                                                     name)));
-            let mut path = path.to_path_buf();
-            path.pop();
-            path.pop();
-            path.push(s);
-            srcs.push(try!(SourceId::for_directory(&path)));
-        }
-        if name == "crates-io" && srcs.is_empty() {
+        if name == "crates-io" {
             srcs.push(try!(SourceId::crates_io(self.config)));
+            if table.get("registry").is_some() {
+                try!(self.config.shell().warn("overriding registry for \
+                                               source.crates-io is not \
+                                               allowed, and the value \
+                                               specified has been ignored."
+                                             ));
+            }
+            if table.get("local-registry").is_some() {
+                try!(self.config.shell().warn("specifying local-registry for \
+                                               source.crates-io is not \
+                                               allowed, and the value \
+                                               specified has been ignored."
+                                             ));
+            }
+            if table.get("directory").is_some() {
+                try!(self.config.shell().warn("specifying directory for \
+                                               source.crates-io is not \
+                                               allowed, and the value \
+                                               specified has been ignored."
+                                             ));
+            }
+        } else {
+            if let Some(val) = table.get("registry") {
+                let url = try!(url(val, &format!("source.{}.registry", name)));
+                srcs.push(SourceId::for_registry(&url));
+            }
+            if let Some(val) = table.get("local-registry") {
+                let (s, path) = try!(val.string(&format!("source.{}.local-registry",
+                                                         name)));
+                let mut path = path.to_path_buf();
+                path.pop();
+                path.pop();
+                path.push(s);
+                srcs.push(try!(SourceId::for_local_registry(&path)));
+            }
+            if let Some(val) = table.get("directory") {
+                let (s, path) = try!(val.string(&format!("source.{}.directory",
+                                                         name)));
+                let mut path = path.to_path_buf();
+                path.pop();
+                path.pop();
+                path.push(s);
+                srcs.push(try!(SourceId::for_directory(&path)));
+            }
         }
 
         let mut srcs = srcs.into_iter();

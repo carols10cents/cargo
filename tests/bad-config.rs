@@ -894,3 +894,103 @@ fn bad_source_config7() {
 error: more than one source URL specified for `source.foo`
 "));
 }
+
+#[test]
+fn disallow_crates_io_registry_override() {
+    let p = project("foo")
+        .file("Cargo.toml", r#"
+            [package]
+            name = "foo"
+            version = "0.0.0"
+            authors = []
+        "#)
+        .file("src/lib.rs", "")
+        .file(".cargo/config", r#"
+            [source.crates-io]
+            registry = 'http://example.com'
+        "#);
+
+    assert_that(p.cargo_process("build"),
+                execs().with_status(0).with_stderr("\
+warning: overriding registry for source.crates-io is not allowed, and the \
+value specified has been ignored.
+[COMPILING] foo v0.0.0 ([..])
+[FINISHED] debug [unoptimized + debuginfo] target(s) in [..]
+"));
+}
+
+#[test]
+fn disallow_crates_io_local_registry() {
+    let p = project("foo")
+        .file("Cargo.toml", r#"
+            [package]
+            name = "foo"
+            version = "0.0.0"
+            authors = []
+        "#)
+        .file("src/lib.rs", "")
+        .file(".cargo/config", r#"
+            [source.crates-io]
+            local-registry = 'registry'
+        "#);
+
+    assert_that(p.cargo_process("build"),
+                execs().with_status(0).with_stderr("\
+warning: specifying local-registry for source.crates-io is not allowed, and \
+the value specified has been ignored.
+[COMPILING] foo v0.0.0 ([..])
+[FINISHED] debug [unoptimized + debuginfo] target(s) in [..]
+"));
+}
+
+#[test]
+fn disallow_crates_io_directory() {
+    let p = project("foo")
+        .file("Cargo.toml", r#"
+            [package]
+            name = "foo"
+            version = "0.0.0"
+            authors = []
+        "#)
+        .file("src/lib.rs", "")
+        .file(".cargo/config", r#"
+            [source.crates-io]
+            directory = 'registry'
+        "#);
+
+    assert_that(p.cargo_process("build"),
+                execs().with_status(0).with_stderr("\
+warning: specifying directory for source.crates-io is not allowed, and the \
+value specified has been ignored.
+[COMPILING] foo v0.0.0 ([..])
+[FINISHED] debug [unoptimized + debuginfo] target(s) in [..]
+"));
+}
+
+#[test]
+fn disallow_crates_io_registry_override_when_replacing() {
+    let p = project("foo")
+        .file("Cargo.toml", r#"
+            [package]
+            name = "foo"
+            version = "0.0.0"
+            authors = []
+        "#)
+        .file("src/lib.rs", "")
+        .file(".cargo/config", r#"
+            [source.crates-io]
+            registry = 'http://example.com'
+            replace-with = 'bar'
+
+            [source.bar]
+            directory = 'index'
+        "#);
+
+    assert_that(p.cargo_process("build"),
+                execs().with_status(0).with_stderr("\
+warning: overriding registry for source.crates-io is not allowed, and the \
+value specified has been ignored.
+[COMPILING] foo v0.0.0 ([..])
+[FINISHED] debug [unoptimized + debuginfo] target(s) in [..]
+"));
+}
