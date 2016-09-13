@@ -689,7 +689,6 @@ fn bad_source_config2() {
         .file("src/lib.rs", "")
         .file(".cargo/config", r#"
             [source.crates-io]
-            registry = 'http://example.com'
             replace-with = 'bar'
         "#);
 
@@ -721,7 +720,6 @@ fn bad_source_config3() {
         .file("src/lib.rs", "")
         .file(".cargo/config", r#"
             [source.crates-io]
-            registry = 'http://example.com'
             replace-with = 'crates-io'
         "#);
 
@@ -752,7 +750,6 @@ fn bad_source_config4() {
         .file("src/lib.rs", "")
         .file(".cargo/config", r#"
             [source.crates-io]
-            registry = 'http://example.com'
             replace-with = 'bar'
 
             [source.bar]
@@ -788,7 +785,6 @@ fn bad_source_config5() {
         .file("src/lib.rs", "")
         .file(".cargo/config", r#"
             [source.crates-io]
-            registry = 'http://example.com'
             replace-with = 'bar'
 
             [source.bar]
@@ -842,7 +838,6 @@ fn bad_source_config6() {
         .file("src/lib.rs", "")
         .file(".cargo/config", r#"
             [source.crates-io]
-            registry = 'http://example.com'
             replace-with = ['not', 'a', 'string']
         "#);
 

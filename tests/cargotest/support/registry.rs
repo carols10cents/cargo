@@ -49,7 +49,6 @@ pub fn init() {
             token = "api-token"
 
         [source.crates-io]
-        registry = 'https://wut'
         replace-with = 'dummy-registry'
 
         [source.dummy-registry]
